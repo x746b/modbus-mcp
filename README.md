@@ -14,7 +14,7 @@ An MCP server that standardizes and contextualizes Modbus data, enabling seamles
   - Read input registers (`read_input_registers`).
   - Read multiple holding registers (`read_multiple_holding_registers`).
 - **Prompt**: Analyze Modbus register values with a customizable prompt (`analyze_register`).
-- **Flexible Connections**: Supports Modbus over TCP, UDP, or serial, configured via environment variables.
+- **Flexible Connections**: Supports Modbus over TCP, UDP, or serial, configured via environment variables or dynamically per request.
 
 ## Requirements
 
@@ -41,16 +41,16 @@ An MCP server that standardizes and contextualizes Modbus data, enabling seamles
 
 ## Configuration
 
-The server connects to a Modbus device using parameters specified via environment variables. Set these variables in a `.env` file or your shell environment.
+The server connects to a Modbus device. You can configure defaults using environment variables, or pass connection details (`host`, `port`) dynamically with each request.
 
-### Environment Variables
+### Environment Variables (Defaults)
 
 | Variable                   | Description                                      | Default              | Required |
 |-------------------------   |--------------------------------------------------|----------------------|----------|
-| `MODBUS_TYPE`              | Connection type: `tcp`, `udp`, or `serial`       | `tcp`                | Yes      |
-| `MODBUS_HOST`              | Host address for TCP/UDP                        | `127.0.0.1`          | For TCP/UDP |
-| `MODBUS_PORT`              | Port for TCP/UDP                                | `502`                | For TCP/UDP |
-| `MODBUS_DEFAULT_SLAVE_ID`  | Slave ID                                        | `1`                  | For TCP/UDP |
+| `MODBUS_TYPE`              | Connection type: `tcp`, `udp`, or `serial`       | `tcp`                | No       |
+| `MODBUS_HOST`              | Host address for TCP/UDP                        | `127.0.0.1`          | No       |
+| `MODBUS_PORT`              | Port for TCP/UDP                                | `502`                | No       |
+| `MODBUS_DEFAULT_SLAVE_ID`  | Slave ID                                        | `1`                  | No       |
 | `MODBUS_SERIAL_PORT`       | Serial port (e.g., `/dev/ttyUSB0`, `COM1`)      | `/dev/ttyUSB0`       | For serial |
 | `MODBUS_BAUDRATE`          | Serial baud rate                                | `9600`               | For serial |
 | `MODBUS_PARITY`            | Serial parity: `N` (none), `E` (even), `O` (odd) | `N`                 | For serial |
@@ -80,6 +80,20 @@ MODBUS_TIMEOUT=1
 ```
 
 ## Usage
+
+### Quick Install (CLI)
+
+If you have the `claude` or `gemini` CLI tools installed, you can add this server directly from the repository:
+
+**Claude CLI:**
+```bash
+claude mcp add modbus-mcp uvx --from git+https://github.com/x746b/modbus-mcp modbus-mcp
+```
+
+**Gemini CLI:**
+```bash
+gemini mcp add modbus-mcp uvx --from git+https://github.com/x746b/modbus-mcp modbus-mcp
+```
 
 ### Installing for Claude Desktop
 
@@ -185,6 +199,18 @@ The configuration file:
      ```
    - **Expected Output**: `Holding Registers 0 to 2: [<value1>, <value2>, <value3>]`
 
+7. **Dynamic Connection (Example)**:
+   - **Prompt**:
+     ```
+     Read register 10 from the Modbus device at 192.168.1.50.
+     ```
+   - **MCP Inspector JSON**:
+     ```json
+     {
+       "tool": "read_register",
+       "parameters": {"address": 10, "host": "192.168.1.50"}
+     }
+     ```
 
 ## License
 
