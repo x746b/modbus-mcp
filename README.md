@@ -87,7 +87,7 @@ If you have the `claude` or `gemini` CLI tools installed, you can add this serve
 
 **Claude CLI:**
 ```bash
-claude mcp add modbus-mcp uv --directory /opt/modbus-mcp run modbus-mcp
+claude mcp add modbus-mcp --scope user -- uv --directory /opt/modbus-mcp run modbus-mcp
 ```
 
 **Gemini CLI:**
