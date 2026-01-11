@@ -83,16 +83,16 @@ MODBUS_TIMEOUT=1
 
 ### Quick Install (CLI)
 
-If you have the `claude` or `gemini` CLI tools installed, you can add this server directly from the repository:
+If you have the `claude` or `gemini` CLI tools installed, you can add this server from your local clone:
 
 **Claude CLI:**
 ```bash
-claude mcp add modbus-mcp uvx --from git+https://github.com/x746b/modbus-mcp modbus-mcp
+claude mcp add modbus-mcp uv --directory /opt/modbus-mcp run modbus-mcp
 ```
 
 **Gemini CLI:**
 ```bash
-gemini mcp add modbus-mcp uvx --from git+https://github.com/x746b/modbus-mcp modbus-mcp
+gemini mcp add modbus-mcp uv --directory /opt/modbus-mcp run modbus-mcp
 ```
 
 ### Installing for Claude Desktop
@@ -104,7 +104,7 @@ The configuration file:
    "mcpServers": {
        "Modbus MCP Server": {
            "command": "uv",
-           "args": [ "--directory", "/path/to/modbus-mcp", "run", "modbus-mcp" ],
+           "args": [ "--directory", "/opt/modbus-mcp", "run", "modbus-mcp" ],
            "env": { "MODBUS_TYPE": "tcp", "MODBUS_HOST": "127.0.0.1", "MODBUS_PORT": 502 },
        }
    }
